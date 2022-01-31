@@ -42,10 +42,18 @@ export default {
               authorization: `${oauthData.token_type} ${oauthData.access_token}`
             }
           })
+          const guildResult = await fetch('https://discord.com/api/users/@me/guilds', {
+            headers: {
+              authorization: `${oauthData.token_type} ${oauthData.access_token}`
+            }
+          })
           const userData = await userResult.json()
+          const guildData = await guildResult.json()
+
           console.log(userData)
-          this.$cookies.config('2d')
-          this.$cookies.set('userData', userData)
+          console.log(guildData)
+
+          this.$store.dispatch('setActionDisData', { user: userData, guild: guildData })
           this.$router.push('/dashboard')
         } catch (error) {
           // NOTE: An unauthorized token will not throw an error;
