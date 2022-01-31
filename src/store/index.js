@@ -6,26 +6,35 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userData: null,
-    guildData: []
+    guildAdminData: [],
+    guildData: [],
+    editServer: null
   },
   mutations: {
     setMutateDisData (state, payload) {
       // stateへ
       state.userData = payload.user
-      state.guildData = []
+      state.guildData = payload.guild
+      state.guildAdminData = []
       for (const guild of payload.guild) {
-        if (guild.permissions === 2147483647) {
-          state.guildData.push(guild)
+        if ((guild.permissions & 8) === 8) {
+          state.guildAdminData.push(guild)
         }
       }
       // console.log(state.userData)
       // console.log(state.guildData)
+    },
+    setMutateEditServer (state, payload) {
+      state.editServer = payload.EditServer
     }
   },
   actions: {
     setActionDisData (store, payload) {
       // Mutationsへ
       store.commit('setMutateDisData', payload)
+    },
+    setActionEditServer (store, payload) {
+      store.commit('setMutateEditServer', payload)
     }
   },
   modules: {
