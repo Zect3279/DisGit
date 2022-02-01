@@ -5,52 +5,41 @@
       <h1>{{ editServer.name }}</h1>
     </v-col>
   </v-row>
-<v-row>
-<v-col>
-<v-card
-  flat
-  tile
->
-  <v-list>
-    <div
-      v-for="([category, channels], i) in categories"
-      :key="i"
+  <v-row>
+    <v-col
+      align="center"
     >
-      <v-list-item v-if="!channels">
-        <v-list-item-icon>
-          <v-icon>mdi-folder-cancel</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-title v-text="category"></v-list-item-title>
-      </v-list-item>
-
-      <v-list-group
-        v-else
-        no-action
-        sub-group
+      <v-btn-toggle
+        v-model="toggle_one"
+        shaped
+        mandatory
+        dark
       >
-        <template v-slot:activator>
-        <v-list-item-icon>
-          <v-icon>mdi-folder</v-icon>
-        </v-list-item-icon>
-          <v-list-item-title v-text="category"></v-list-item-title>
-        </template>
+        <v-btn>
+          <v-icon>mdi-pencil-outline</v-icon>
+          Edit
+        </v-btn>
 
-        <v-list-item
-          v-for="([channel, icon], i) in channels"
-          :key="i"
-          link
-        >
-          <v-list-item-icon>
-            <v-icon v-text="icon"></v-icon>
-          </v-list-item-icon>
+        <v-btn>
+          <v-icon>mdi-alert-circle-outline</v-icon>
+          Issue
+        </v-btn>
 
-          <v-list-item-title v-text="channel"></v-list-item-title>
-        </v-list-item>
-      </v-list-group>
-    </div>
-  </v-list>
-</v-card>
+        <v-btn>
+          <v-icon>mdi-source-pull</v-icon>
+          Pull Request
+        </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-cog-outline</v-icon>
+          Setting
+        </v-btn>
+      </v-btn-toggle>
+    </v-col>
+  </v-row>
+<v-row>
+<v-col v-if="toggle_one == 0">
+  <Editor />
 </v-col>
 </v-row>
 </v-container>
@@ -58,14 +47,15 @@
 
 <script>
 import { mapState } from 'vuex'
+import Editor from '@/components/Editor.vue'
 
 export default {
   data: () => ({
-    categories: [
-      ['テキストチャンネル', [['一般', 'mdi-pound']]],
-      ['ボイスチャンネル', [['一般', 'mdi-volume-high']]]
-    ]
+    toggle_one: 0
   }),
+  components: {
+    Editor
+  },
   computed: {
     // state から
     ...mapState(['userData']),
