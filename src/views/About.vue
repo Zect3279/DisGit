@@ -41,6 +41,7 @@
   >
     <v-list-item-group
       color="primary"
+      mandatory
     >
       <v-list-item
         v-for="(guild, i) in guildAdminData"
