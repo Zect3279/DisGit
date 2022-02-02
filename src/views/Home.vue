@@ -81,6 +81,31 @@
       </v-btn>
     </v-col>
   </v-row>
+  <v-row justify="space-around">
+    <v-col cols="auto">
+      <v-dialog
+        transition="dialog-top-transition"
+        max-width="600"
+        v-model="dialog"
+      >
+        <v-card>
+          <v-toolbar
+            color="primary"
+            dark
+          >Discord OAuth</v-toolbar>
+          <v-card-text>
+            <div class="text-h2 pa-12">Please Wait...</div>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn
+              text
+              @click="dialog = false"
+            >Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-col>
+  </v-row>
 </v-container>
 </v-main>
 </v-app>
@@ -90,11 +115,61 @@
 export default {
   name: 'Home',
   data: () => ({
-    //
+    dialog: false
   }),
+  created: async function () {
+    await this.oauth()
+  },
   methods: {
     login () {
       window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${process.env.VUE_APP_clientId}&redirect_uri=${process.env.VUE_APP_redirect}&response_type=code&scope=identify%20guilds`
+    },
+    async oauth () {
+      if (this.$route.query.code) {
+        try {
+          this.dialog = true
+          // this.$cookies.remove('userData')
+          const code = this.$route.query.code
+          const oauthResult = await fetch('https://discord.com/api/oauth2/token', {
+            method: 'POST',
+            body: new URLSearchParams({
+              client_id: process.env.VUE_APP_clientId,
+              client_secret: process.env.VUE_APP_clientSecret,
+              code,
+              grant_type: 'authorization_code',
+              redirect_uri: `http://localhost:${process.env.VUE_APP_port}`,
+              scope: 'identify'
+            }),
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          })
+          const oauthData = await oauthResult.json()
+          console.log(oauthData)
+          const userResult = await fetch('https://discord.com/api/users/@me', {
+            headers: {
+              authorization: `${oauthData.token_type} ${oauthData.access_token}`
+            }
+          })
+          const guildResult = await fetch('https://discord.com/api/users/@me/guilds', {
+            headers: {
+              authorization: `${oauthData.token_type} ${oauthData.access_token}`
+            }
+          })
+          const userData = await userResult.json()
+          const guildData = await guildResult.json()
+
+          console.log(userData)
+          console.log(guildData)
+
+          this.$store.dispatch('setActionDisData', { user: userData, guild: guildData })
+          this.$router.push('/dashboard')
+        } catch (error) {
+          // NOTE: An unauthorized token will not throw an error;
+          // it will return a 401 Unauthorized response in the try block above
+          console.error(error)
+        }
+      }
     }
   }
 }
