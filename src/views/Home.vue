@@ -86,7 +86,7 @@
       <v-dialog
         transition="dialog-top-transition"
         max-width="600"
-        v-model="dialog"
+        v-model="dialogOAuth"
       >
         <v-card>
           <v-toolbar
@@ -99,7 +99,32 @@
           <v-card-actions class="justify-end">
             <v-btn
               text
-              @click="dialog = false"
+              @click="dialogOAuth = false"
+            >Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-col>
+  </v-row>
+  <v-row justify="space-around">
+    <v-col cols="auto">
+      <v-dialog
+        transition="dialog-top-transition"
+        max-width="600"
+        v-model="dialogFailed"
+      >
+        <v-card>
+          <v-toolbar
+            color="red darken-1"
+            dark
+          >Discord OAuth</v-toolbar>
+          <v-card-text>
+            <div class="text-h2 pa-12">OAuth Failed</div>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn
+              text
+              @click="dialogFailed = false"
             >Close</v-btn>
           </v-card-actions>
         </v-card>
@@ -115,7 +140,8 @@
 export default {
   name: 'Home',
   data: () => ({
-    dialog: false
+    dialogOAuth: false,
+    dialogFailed: false
   }),
   created: async function () {
     await this.oauth()
@@ -127,7 +153,7 @@ export default {
     async oauth () {
       if (this.$route.query.code) {
         try {
-          this.dialog = true
+          this.dialogOAuth = true
           // this.$cookies.remove('userData')
           const code = this.$route.query.code
           const oauthResult = await fetch('https://discord.com/api/oauth2/token', {
@@ -168,6 +194,8 @@ export default {
           // NOTE: An unauthorized token will not throw an error;
           // it will return a 401 Unauthorized response in the try block above
           console.error(error)
+          this.dialogOAuth = false
+          this.dialogFailed = true
         }
       }
     }
