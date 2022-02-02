@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     login () {
-      window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${process.env.VUE_APP_clientId}&redirect_uri=${process.env.VUE_APP_redirect}&response_type=code&scope=identify%20guilds`
+      window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${process.env.VUE_APP_clientId}&redirect_uri=${process.env.VUE_APP_callback}&response_type=code&scope=identify%20guilds`
     },
     async oauth () {
       if (this.$route.query.code) {
@@ -137,7 +137,7 @@ export default {
               client_secret: process.env.VUE_APP_clientSecret,
               code,
               grant_type: 'authorization_code',
-              redirect_uri: `http://localhost:${process.env.VUE_APP_port}`,
+              redirect_uri: process.env.VUE_APP_redirect,
               scope: 'identify'
             }),
             headers: {
