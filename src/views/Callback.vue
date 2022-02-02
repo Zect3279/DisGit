@@ -1,10 +1,12 @@
 <template>
-  <div class="login">
-    <p>
-      Authorizing...<br>
-      Please wait for a moment...
-    </p>
-  </div>
+<v-app>
+<v-main>
+  <p>
+    Authorizing...<br>
+    Please wait for a moment...
+  </p>
+</v-main>
+</v-app>
 </template>
 
 <script>

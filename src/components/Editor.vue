@@ -4,43 +4,31 @@
   tile
 >
   <v-list>
-    <div
+    <v-list-group
+      no-action
+      sub-group
       v-for="([category, channels], i) in categories"
       :key="i"
     >
-      <v-list-item v-if="!channels">
-        <v-list-item-icon>
-          <v-icon>mdi-folder-cancel</v-icon>
-        </v-list-item-icon>
-
+      <template v-slot:activator>
+      <v-list-item-icon>
+        <v-icon>mdi-folder</v-icon>
+      </v-list-item-icon>
         <v-list-item-title v-text="category"></v-list-item-title>
-      </v-list-item>
+      </template>
 
-      <v-list-group
-        v-else
-        no-action
-        sub-group
+      <v-list-item
+        v-for="([channel, id, icon]) in channels"
+        :key="id"
+        link
       >
-        <template v-slot:activator>
         <v-list-item-icon>
-          <v-icon>mdi-folder</v-icon>
+          <v-icon v-text="icon"></v-icon>
         </v-list-item-icon>
-          <v-list-item-title v-text="category"></v-list-item-title>
-        </template>
 
-        <v-list-item
-          v-for="([channel, icon], i) in channels"
-          :key="i"
-          link
-        >
-          <v-list-item-icon>
-            <v-icon v-text="icon"></v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-title v-text="channel"></v-list-item-title>
-        </v-list-item>
-      </v-list-group>
-    </div>
+        <v-list-item-title v-text="channel"></v-list-item-title>
+      </v-list-item>
+    </v-list-group>
   </v-list>
 </v-card>
 </template>
@@ -50,9 +38,20 @@ import { mapState } from 'vuex'
 
 export default {
   data: () => ({
+    selectedItem: 0,
     categories: [
-      ['テキストチャンネル', [['一般', 'mdi-pound']]],
-      ['ボイスチャンネル', [['一般', 'mdi-volume-high']]]
+      ['None', [
+        ['ルール', '879198780275191830', 'mdi-checkbox-multiple-marked-outline']
+      ]],
+      ['テキストチャンネル', [
+        ['連絡', '879001203986554880', 'mdi-pound'],
+        ['一般', '878998224554324009', 'mdi-pound'],
+        ['チケット作成', '879613434109509652', 'mdi-pound'],
+        ['企画', '879003107453972511', 'mdi-pound']
+      ]],
+      ['ボイスチャンネル', [
+        ['VC', '878997568187678732', 'mdi-volume-high']
+      ]]
     ]
   }),
   computed: {
