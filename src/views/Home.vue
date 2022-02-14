@@ -2,39 +2,12 @@
 <v-app>
 <v-app-bar
   app
-  color="#424242"
+  color="grey darken-3"
   dark
 >
-  <div class="d-flex align-center">
-    <v-img
-      alt="Vuetify Logo"
-      class="shrink mr-2"
-      contain
-      src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-      transition="scale-transition"
-      width="40"
-    />
-
-    <v-img
-      alt="Vuetify Name"
-      class="shrink mt-1 hidden-sm-and-down"
-      contain
-      min-width="100"
-      src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-      width="100"
-    />
+  <div class="d-flex align-center mr-2">
+    <v-toolbar-title>DisGit</v-toolbar-title>
   </div>
-
-  <v-spacer></v-spacer>
-
-  <v-btn
-    href="https://github.com/vuetifyjs/vuetify/releases/latest"
-    target="_blank"
-    text
-  >
-    <span class="mr-2">Latest Release</span>
-    <v-icon>mdi-open-in-new</v-icon>
-  </v-btn>
 </v-app-bar>
 
 <v-main>
@@ -55,18 +28,22 @@
       </h1>
 
       <p class="subheading font-weight-regular">
-        For help and collaboration with other DisGit developers,
-        <br>please join our online
+        DisGit関係で何かあれば、
+        <br>
         <a
           href="https://community.vuetifyjs.com"
           target="_blank"
-        >Discord Community</a>
+        >ディスコードサーバー</a>
+        へ
       </p>
     </v-col>
     <v-col
       class="mb-5"
       cols="12"
     >
+      <h2 style="margin-bottom: 10px;">
+        PCでの使用を推奨します
+      </h2>
       <v-btn
         color="primary"
         elevation="6"
