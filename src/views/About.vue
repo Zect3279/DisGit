@@ -7,6 +7,13 @@
   dark
 >
   <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+  <v-spacer></v-spacer>
+
+  <v-toolbar-title color="teal lighten-1">Reload</v-toolbar-title>
+  <v-btn icon @click="getCC">
+    <v-icon>mdi-reload</v-icon>
+  </v-btn>
 </v-app-bar>
 <v-navigation-drawer
   v-model="drawer"
